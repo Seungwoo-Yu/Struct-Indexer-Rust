@@ -3,7 +3,9 @@ pub mod errors;
 use std::any::Any;
 use std::borrow::BorrowMut;
 use std::cell::Cell;
-use std::sync::{Mutex, MutexGuard, PoisonError};
+use std::ops::Deref;
+use std::rc::Rc;
+use std::sync::{Arc, Mutex, MutexGuard, PoisonError};
 use crate::errors::Error;
 use crate::errors::ErrorCodes::NoIdFound;
 
@@ -62,4 +64,50 @@ pub fn equal_to<T: Sized + Any + Indexed, T2: Sized + Any + Indexed>(
     instance2: &T2,
 ) -> Result<bool, Error> {
     Ok(instance1.__id()? == instance2.__id()?)
+}
+
+pub enum Containers<T> {
+    Box(Box<T>),
+    Rc(Rc<T>),
+    Arc(Arc<T>),
+    Value(T)
+}
+
+pub trait ContainerConvert<T> {
+    fn to_container(self) -> Containers<T>;
+}
+
+impl<T> ContainerConvert<T> for Box<T> {
+    fn to_container(self) -> Containers<T> {
+        Containers::Box(Box::from(self))
+    }
+}
+
+impl<T> ContainerConvert<T> for Rc<T> {
+    fn to_container(self) -> Containers<T> {
+        Containers::Rc(self)
+    }
+}
+
+impl<T> ContainerConvert<T> for Arc<T> {
+    fn to_container(self) -> Containers<T> {
+        Containers::Arc(self)
+    }
+}
+
+pub fn exclude_container<T: Clone>(instance: Containers<T>) -> T {
+        return match instance {
+            Containers::Box(value) => {
+                *value
+            }
+            Containers::Rc(value) => {
+                value.deref().clone()
+            }
+            Containers::Arc(value) => {
+                value.deref().clone()
+            }
+            Containers::Value(value) => {
+                value
+            }
+        };
 }
