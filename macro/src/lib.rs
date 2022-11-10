@@ -35,6 +35,16 @@ pub fn to_any_trait(_input: TokenStream) -> TokenStream {
                 Box<dyn std::any::Any> {
                 self
             }
+
+            fn __struct_indexer_to_rc_any(self: std::rc::Rc<Self>) ->
+                std::rc::Rc<dyn std::any::Any> {
+                self
+            }
+
+            fn __struct_indexer_to_arc_any(self: std::sync::Arc<Self>) ->
+                std::sync::Arc<dyn std::any::Any + Send + Sync> {
+                self
+            }
         }
     };
 
