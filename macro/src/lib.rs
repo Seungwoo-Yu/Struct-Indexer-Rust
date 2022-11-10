@@ -42,7 +42,7 @@ pub fn to_any_trait(_input: TokenStream) -> TokenStream {
             }
 
             fn __struct_indexer_to_arc_any(self: std::sync::Arc<Self>) ->
-                std::sync::Arc<dyn std::any::Any + Send + Sync> {
+                std::sync::Arc<dyn std::any::Any + std::marker::Send + std::marker::Sync> {
                 self
             }
         }
