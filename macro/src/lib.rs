@@ -31,7 +31,8 @@ pub fn to_any_trait(_input: TokenStream) -> TokenStream {
 
     let output = quote! {
         impl struct_indexer_core::ToAnyTrait for #name {
-            fn __struct_indexer_to_any_trait(self: Box<Self>) -> Box<dyn std::any::Any> {
+            fn __struct_indexer_to_box_any(self: Box<Self>) ->
+                Box<dyn std::any::Any> {
                 self
             }
         }
