@@ -114,6 +114,8 @@ pub fn exclude_container<T: Clone>(instance: Containers<T>) -> T {
 
 pub trait ToAnyTrait {
     fn __struct_indexer_to_box_any(self: Box<Self>) -> Box<dyn Any>;
+    fn __struct_indexer_to_rc_any(self: Rc<Self>) -> Rc<dyn Any>;
+    fn __struct_indexer_to_arc_any(self: Arc<Self>) -> Arc<dyn Any + Send + Sync>;
 }
 
 pub trait ToNamedBoxStruct
@@ -125,5 +127,29 @@ pub trait ToNamedBoxStruct
 impl<T: ?Sized + Any + ToAnyTrait> ToNamedBoxStruct for T {
     fn to_named_box_struct<U: Any>(self: Box<T>) -> Result<Box<U>, Box<dyn Any>> {
         self.__struct_indexer_to_box_any().downcast::<U>()
+    }
+}
+
+pub trait ToNamedRcStruct
+    where
+        Self: Any + ToAnyTrait {
+    fn to_named_rc_struct<U: Any>(self: Rc<Self>) -> Result<Rc<U>, Rc<dyn Any>>;
+}
+
+impl<T: ?Sized + Any + ToAnyTrait> ToNamedRcStruct for T {
+    fn to_named_rc_struct<U: Any>(self: Rc<T>) -> Result<Rc<U>, Rc<dyn Any>> {
+        self.__struct_indexer_to_rc_any().downcast::<U>()
+    }
+}
+
+pub trait ToNamedArcStruct
+    where
+        Self: Any + ToAnyTrait {
+    fn to_named_arc_struct<U: Any + Send + Sync>(self: Arc<Self>) -> Result<Arc<U>, Arc<dyn Any + Send + Sync>>;
+}
+
+impl<T: ?Sized + Any + ToAnyTrait> ToNamedArcStruct for T {
+    fn to_named_arc_struct<U: Any + Send + Sync>(self: Arc<T>) -> Result<Arc<U>, Arc<dyn Any + Send + Sync>> {
+        self.__struct_indexer_to_arc_any().downcast::<U>()
     }
 }
