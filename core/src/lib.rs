@@ -113,17 +113,17 @@ pub fn exclude_container<T: Clone>(instance: Containers<T>) -> T {
 }
 
 pub trait ToAnyTrait {
-    fn __struct_indexer_to_any_trait(self: Box<Self>) -> Box<dyn Any>;
+    fn __struct_indexer_to_box_any(self: Box<Self>) -> Box<dyn Any>;
 }
 
-pub trait ToNamedStruct
+pub trait ToNamedBoxStruct
     where
         Self: Any + ToAnyTrait {
-    fn to_named_struct<U: Any>(self: Box<Self>) -> Result<Box<U>, Box<dyn Any>>;
+    fn to_named_box_struct<U: Any>(self: Box<Self>) -> Result<Box<U>, Box<dyn Any>>;
 }
 
-impl<T: ?Sized + Any + ToAnyTrait> ToNamedStruct for T {
-    fn to_named_struct<U: Any>(self: Box<T>) -> Result<Box<U>, Box<dyn Any>> {
-        self.__struct_indexer_to_any_trait().downcast::<U>()
+impl<T: ?Sized + Any + ToAnyTrait> ToNamedBoxStruct for T {
+    fn to_named_box_struct<U: Any>(self: Box<T>) -> Result<Box<U>, Box<dyn Any>> {
+        self.__struct_indexer_to_box_any().downcast::<U>()
     }
 }
