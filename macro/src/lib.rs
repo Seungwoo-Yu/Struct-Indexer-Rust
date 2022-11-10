@@ -23,3 +23,19 @@ pub fn indexed(_input: TokenStream) -> TokenStream {
 
     TokenStream::from(output)
 }
+
+#[proc_macro_derive(ToAnyTrait)]
+pub fn to_any_trait(_input: TokenStream) -> TokenStream {
+    let input = parse_macro_input!(_input as DeriveInput);
+    let name = input.clone().ident;
+
+    let output = quote! {
+        impl struct_indexer_core::ToAnyTrait for #name {
+            fn __struct_indexer_to_any_trait(self: Box<Self>) -> Box<dyn std::any::Any> {
+                self
+            }
+        }
+    };
+
+    TokenStream::from(output)
+}
