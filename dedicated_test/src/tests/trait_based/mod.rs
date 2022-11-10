@@ -11,7 +11,7 @@ fn test1() {
     // Add A and B instances into vector as BaseTrait
     let mut container: Vec<Box<dyn BaseTrait>> = vec![Box::new(A {}), Box::new(B {})];
 
-    // To get reference of each instance from vector,
+    // To get each instance from vector,
     // vector will have to pop instances so they can be owned value.
 
     // Remember that only single Box indicates single instance (using smart pointer).
