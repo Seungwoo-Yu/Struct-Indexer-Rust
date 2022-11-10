@@ -14,10 +14,8 @@ pub fn indexed(_input: TokenStream) -> TokenStream {
     let index = __index().expect("index not found");
 
     let output = quote! {
-        use struct_indexer_core::errors::Error;
-
         impl struct_indexer_core::Indexed for #name {
-            fn __id(&self) -> Result<usize, Error> {
+            fn __id(&self) -> Result<usize, struct_indexer_core::errors::Error> {
                 Ok(#index)
             }
         }
