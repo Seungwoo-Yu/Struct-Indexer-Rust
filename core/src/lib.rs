@@ -111,3 +111,19 @@ pub fn exclude_container<T: Clone>(instance: Containers<T>) -> T {
             }
         };
 }
+
+pub trait ToAnyTrait {
+    fn __struct_indexer_to_any_trait(self: Box<Self>) -> Box<dyn Any>;
+}
+
+pub trait ToNamedStruct
+    where
+        Self: Any + ToAnyTrait {
+    fn to_named_struct<U: Any>(self: Box<Self>) -> Result<Box<U>, Box<dyn Any>>;
+}
+
+impl<T: ?Sized + Any + ToAnyTrait> ToNamedStruct for T {
+    fn to_named_struct<U: Any>(self: Box<T>) -> Result<Box<U>, Box<dyn Any>> {
+        self.__struct_indexer_to_any_trait().downcast::<U>()
+    }
+}
