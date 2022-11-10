@@ -31,7 +31,6 @@ fn test1() {
         ).to_container()
     );
 
-    // TODO: Find out reason why instance_of and same_type_with are not shown up automatically in IDE code completion
     assert_eq!(a.same_type_with(&b).unwrap(), false);
     assert_eq!(b.instance_of::<A>().unwrap(), false);
 }

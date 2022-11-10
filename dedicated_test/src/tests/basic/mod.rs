@@ -20,7 +20,6 @@ fn test1() {
     // Downcast to A
     let vec_a_casted = vec_a.downcast_ref::<A>().unwrap();
 
-    // TODO: Find out reason why instance_of and same_type_with are not shown up automatically in IDE code completion
     assert_eq!(vec_a_casted.same_type_with(&cloned_b).unwrap(), false);
     assert_eq!(vec_a_casted.instance_of::<A>().unwrap(), true);
 }
