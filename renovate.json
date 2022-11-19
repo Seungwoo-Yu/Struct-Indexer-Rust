@@ -8,7 +8,7 @@
     "before 5pm every weekday"
   ],
   "timezone": "Asia/Seoul",
-  "branchPrefix": "fix/dependency/",
+  "branchPrefix": "fixes/dependency/",
   "rangeStrategy": "bump",
   "lockFileMaintenance": {
     "enabled": true
