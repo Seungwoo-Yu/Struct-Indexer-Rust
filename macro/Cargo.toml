@@ -7,7 +7,7 @@ edition = "2021"
 
 [dependencies]
 syn = "1.0.107"
-quote = "1.0.21"
+quote = "1.0.23"
 struct_indexer_core = { path = "../core" }
 
 [lib]
